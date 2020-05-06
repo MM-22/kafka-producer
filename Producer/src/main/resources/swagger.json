@@ -1,0 +1,221 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample Example for Kafka producer.",
+    "version": "1.0.0",
+    "title": "Kafka Producer",
+    "termsOfService": "http://pkglobal.io/terms/",
+    "contact": {
+      "email": "mmanchala@pkglobal.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "customer",
+      "description": "Everything about your customer"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/customer": {
+      "post": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Add a new customer to the kafka",
+        "description": "Add a new customer to the kafka",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "customer object that needs to be added to the kafka",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "customer details saved success",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidData"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "customer": {
+      "type": "object",
+      "required": [
+        "customerNumber",
+        "firstName",
+        "lastName",
+        "birthdate",
+        "country",
+        "countryCode",
+        "mobileNumber",
+        "email",
+        "customerStatus",
+        "address"
+      ],
+      "properties": {
+        "customerNumber": {
+          "type": "string",
+          "description": "enter customerNumber, alphanumeric required field, max length 10",
+          "example": "C000000001"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "enter firstName, required field, min 10, max 50 length"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "enter lastName, required field, min 10, max 50 length"
+        },
+        "birthdate": {
+          "type": "string",
+          "description": "enter birthdate, required field,date format DD-MM-YYYY",
+          "example": "31-12-2020"
+        },
+        "country": {
+          "type": "string",
+          "description": "enter country name, required",
+          "example": "India"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "enter countryCode required, max length 2",
+          "example": "IN"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "enter mobileNumber required, max length 10",
+          "example": "5555551216"
+        },
+        "email": {
+          "type": "string",
+          "description": "enter email id, required, max length 50",
+          "example": "abc@gmail.com"
+        },
+        "customerStatus": {
+          "type": "string",
+          "description": "customer Status",
+          "enum": [
+            "Restored",
+            "Suspended",
+            "Open",
+            "Closed"
+          ]
+        },
+        "address": {
+          "type": "object",
+          "required": [
+            "addressLine1",
+            "postalCode"
+          ],
+          "properties": {
+            "addressLine1": {
+              "type": "string",
+              "description": "enter addressLine1, required field, max length 50"
+            },
+            "addressLine2": {
+              "type": "string",
+              "description": "enter addressLine2, Optional"
+            },
+            "street": {
+              "type": "string",
+              "description": "enter street, Optional"
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "enter postalCode, required field, max length 5"
+            }
+          }
+        }
+      }
+    },
+    "InvalidData": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "400"
+        },
+        "message": {
+          "type": "string",
+          "example": "Invalid Customer Number It should be C000000001 format, starts with C and followed by 9 digits"
+        },
+        "error_type": {
+          "type": "string",
+          "example": "org.springframework.web.bind.MethodArgumentNotValidException"
+        }
+      }
+    },
+    "Unauthorized": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "invalid_token"
+        },
+        "error_description": {
+          "type": "string",
+          "example": "Invalid access token: 4aa9c4db-d3e5-49e9-8a15-61661352f88fa"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "message": {
+          "type": "string",
+          "example": "customer details saved success"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
